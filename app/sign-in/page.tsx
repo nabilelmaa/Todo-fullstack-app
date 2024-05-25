@@ -1,7 +1,10 @@
-import React from "react";
-
+import SignIn from "../components/forms/SignIn";
 function page() {
-  return <div>Sign Page</div>;
+  return (
+    <div>
+      <SignIn />
+    </div>
+  );
 }
 
 export default page;

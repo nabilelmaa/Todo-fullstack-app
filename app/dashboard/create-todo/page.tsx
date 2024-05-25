@@ -26,34 +26,41 @@ const CreateTodo = () => {
     };
 
     try {
+      const token = localStorage.getItem("token");
+
       const response = await fetch("/api/todos/create", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(newTodo),
       });
 
       if (response.ok) {
-        setTimeout(() => {
-          setShowSuccessAlert(false);
-           router.push("/dashboard/my-todos");
-        }, 1000);
         setShowSuccessAlert(true);
         setLoading(false);
-       
+        setTitle("");
+        setDescription("");
+        setDueDate("");
+        setStatus("INCOMPLETE");
+        setTimeout(() => {
+          setShowSuccessAlert(false);
+          router.push("/dashboard/my-todos");
+        }, 1000);
       } else {
         setLoading(false);
         console.error("Failed to create todo");
       }
     } catch (error) {
+      setLoading(false);
       console.error("Error creating todo:", error);
     }
   };
 
   return (
-    <div className="p-6 max-w-md border bg-white rounded-lg">
-      <div className="flex items-center justify-center">
+    <div className="p-6 max-w-full border bg-white rounded-lg mt-12 mx-auto">
+      <div className="flex items-center justify-center mb-4">
         <IoIosCreate className="mr-2 text-2xl" />
         <h1 className="text-2xl font-bold">Create a new Todo</h1>
       </div>
