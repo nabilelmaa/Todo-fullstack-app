@@ -8,7 +8,7 @@ import Image from "next/image";
 
 enum TaskStatus {
   INCOMPLETE = "INCOMPLETE",
-  IN_PROGRESS = "IN_PROGRESS",
+  IN_PROGRESS = "IN PROGRESS",
   COMPLETED = "COMPLETED",
 }
 

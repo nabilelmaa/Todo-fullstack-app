@@ -1,10 +1,12 @@
-import SignIn from "../components/forms/SignIn";
-function page() {
+"use client";
+import SignInForm from "@/app/components/forms/SignInForm";
+
+const SignInPage = () => {
   return (
     <div>
-      <SignIn />
+      <SignInForm />
     </div>
   );
-}
+};
 
-export default page;
+export default SignInPage;

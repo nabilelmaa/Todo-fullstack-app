@@ -3,19 +3,21 @@ import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { useRouter } from "next/navigation";
 import { IoIosEye, IoIosEyeOff } from "react-icons/io";
+import { useUser } from "@/contexts/UserContext";
 
-const LoginForm: React.FC = () => {
+const SignInForm: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState(false);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const { setUser } = useUser();
 
   const handleSubmit = async (e: React.FormEvent) => {
     setLoading(true);
     e.preventDefault();
-
+    console.log("Data submitted:", { email, password });
     try {
       const response = await fetch("/api/auth/sign-in", {
         method: "POST",
@@ -28,11 +30,30 @@ const LoginForm: React.FC = () => {
       const data = await response.json();
 
       if (response.ok) {
-        console.log("User logged in.");
         localStorage.setItem("token", data.token);
-        console.log(`${data.token}`);
-        setLoading(false);
-        router.push("/dashboard/my-todos");
+        const userDetailsResponse = await fetch("/api/auth/user-details", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email }),
+        });
+
+        const userDetailsData = await userDetailsResponse.json();
+
+        if (userDetailsResponse.ok) {
+          const { username } = userDetailsData.user;
+
+          setUser({ username, email });
+
+          console.log(`${data.token}`);
+          setLoading(false);
+          router.push("/dashboard/my-todos");
+        } else {
+          setLoading(false);
+          setErrorMessage(true);
+          console.error(userDetailsData.message);
+        }
       } else {
         setLoading(false);
         setErrorMessage(true);
@@ -43,6 +64,7 @@ const LoginForm: React.FC = () => {
       console.error("An error occurred:", error);
     }
   };
+
   const togglePassword = () => {
     setShowPassword(!showPassword);
   };
@@ -116,7 +138,10 @@ const LoginForm: React.FC = () => {
                 strokeLinejoin="round"
               />
             </svg>
-            <label className="block text-gray-700 text-sm ml-1" htmlFor="password">
+            <label
+              className="block text-gray-700 text-sm ml-1"
+              htmlFor="password"
+            >
               Password
             </label>
           </div>
@@ -177,7 +202,7 @@ const LoginForm: React.FC = () => {
       </div>
       <div className="flex justify-center">
         <button
-          className="flex items-center justify-center hover:bg-reed-600 py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full border border-black"
+          className="flex items-center justify-center hover:bg-red-600 hover:text-white py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full border border-black"
           type="button"
         >
           <FcGoogle className="mr-2 text-xl" />
@@ -195,4 +220,4 @@ const LoginForm: React.FC = () => {
   );
 };
 
-export default LoginForm;
+export default SignInForm;

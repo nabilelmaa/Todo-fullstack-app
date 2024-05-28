@@ -10,7 +10,7 @@ import { GrStatusGood } from "react-icons/gr";
 
 enum TaskStatus {
   INCOMPLETE = "INCOMPLETE",
-  IN_PROGRESS = "IN_PROGRESS",
+  IN_PROGRESS = "IN PROGRESS",
   COMPLETED = "COMPLETED",
 }
 

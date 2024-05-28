@@ -4,7 +4,7 @@ import { FcGoogle } from "react-icons/fc";
 import { useRouter } from "next/navigation";
 import { IoIosEye, IoIosEyeOff } from "react-icons/io";
 
-const SignUp: React.FC = () => {
+const SignUpForm: React.FC = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -35,7 +35,7 @@ const SignUp: React.FC = () => {
         router.push("/sign-in");
       } else {
         setLoading(false);
-        // setErrorMessage(true);
+        setErrorMessage(true);
         console.error(data.message);
       }
     } catch (error) {
@@ -134,7 +134,7 @@ const SignUp: React.FC = () => {
       </div>
       <div className="flex justify-center">
         <button
-          className="flex items-center justify-center hover:bg-reed-600 py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full border border-black"
+          className="flex items-center justify-center hover:bg-red-600 hover:text-white py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full border border-black"
           type="button"
         >
           <FcGoogle className="mr-2 text-xl" />
@@ -145,4 +145,4 @@ const SignUp: React.FC = () => {
   );
 };
 
-export default SignUp;
+export default SignUpForm;

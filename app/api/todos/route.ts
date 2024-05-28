@@ -6,7 +6,6 @@ export const GET = async (req: NextRequest) => {
   const decodedToken = await verifyToken(req);
 
   if (decodedToken instanceof NextResponse) {
-    // If verifyToken returns a NextResponse, it means an error occurred
     return decodedToken;
   }
 
